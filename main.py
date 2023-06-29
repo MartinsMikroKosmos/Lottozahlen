@@ -32,17 +32,28 @@ class Lotto:
                 print(number, end=" ")
         print()
 
-    def save_lotto_numbers(self, numbers):
+    def save_lotto_numbers(self, numbers, lottery_type):
         filename = f"Lottozahlen_{date.today()}.txt"
         with open(filename, "a") as file:
-            file.write("Lottozahlen\n")
-            for number in numbers:
-                if isinstance(number, list):
-                    super_numbers = ", ".join(str(n) for n in number)
-                    file.write(f"Superzahlen: {super_numbers}\n")
-                else:
-                    file.write(f"{number} ")
-            file.write("\n\n")
+            file.write("Deine Lottozahlen sind:\n")
+            if lottery_type == "6 aus 49":
+                file.write("Lotto 6 aus 49:\n")
+                for number in numbers:
+                    if isinstance(number, list):
+                        super_numbers = ", ".join(str(n) for n in number)
+                        file.write(f"Superzahl: {super_numbers}\n")
+                    else:
+                        file.write(f"{number} ")
+                file.write("\n\n")
+            elif lottery_type == "EuroLotto":
+                file.write("EuroLotto:\n")
+                for number in numbers:
+                    if isinstance(number, list):
+                        super_numbers = ", ".join(str(n) for n in number)
+                        file.write(f"Superzahlen: {super_numbers}\n")
+                    else:
+                        file.write(f"{number} ")
+                file.write("\n\n")
         print(f"Lottozahlen wurden im Dokument {filename} gespeichert.")
 
     def print_description(self):
@@ -59,8 +70,10 @@ class Lotto:
 
             if choice == 1:
                 game = Lotto6aus49()
+                lottery_type = "6 aus 49"
             elif choice == 2:
                 game = EuroLotto()
+                lottery_type = "EuroLotto"
             else:
                 print("Bitte wähle eine richtige Lotterie aus")
                 continue
@@ -70,7 +83,7 @@ class Lotto:
             for _ in range(num_sets):
                 lotto_numbers = game.generate_lotto_numbers()
                 self.print_lotto_numbers(lotto_numbers)
-                self.save_lotto_numbers(lotto_numbers)
+                self.save_lotto_numbers(lotto_numbers, lottery_type)
 
             repeat = input("Möchtest du weitere Lotterie-Sätze generieren? (ja/nein): ")
             if repeat.lower() != "ja":
