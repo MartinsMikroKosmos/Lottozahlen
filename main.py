@@ -1,4 +1,5 @@
 import random
+from datetime import date
 
 
 class Lotto:
@@ -31,6 +32,19 @@ class Lotto:
                 print(number, end=" ")
         print()
 
+    def save_lotto_numbers(self, numbers):
+        filename = f"Lottozahlen_{date.today()}.txt"
+        with open(filename, "a") as file:
+            file.write("Lottozahlen\n")
+            for number in numbers:
+                if isinstance(number, list):
+                    super_numbers = ", ".join(str(n) for n in number)
+                    file.write(f"Superzahlen: {super_numbers}\n")
+                else:
+                    file.write(f"{number} ")
+            file.write("\n\n")
+        print(f"Lottozahlen wurden im Dokument {filename} gespeichert.")
+
     def print_description(self):
         print("\n" + self.description.center(self.message_length) + "\n")
 
@@ -56,6 +70,7 @@ class Lotto:
             for _ in range(num_sets):
                 lotto_numbers = game.generate_lotto_numbers()
                 self.print_lotto_numbers(lotto_numbers)
+                self.save_lotto_numbers(lotto_numbers)
 
             repeat = input("Möchtest du weitere Lotterie-Sätze generieren? (ja/nein): ")
             if repeat.lower() != "ja":
@@ -105,5 +120,5 @@ class EuroLotto(Lotto):
 
 
 if __name__ == "__main__":
-    game = Lotto()
-    game.run()
+    lotto = Lotto()
+    lotto.run()
